@@ -29,3 +29,5 @@ html5lib
 
 # JSON5 support
 json5
+
+langgraph.checkpoint.sqlite
