@@ -1,0 +1,31 @@
+# Graph construction & checkpoints
+langgraph
+
+# LangChain core abstractions
+langchain-core
+
+# Google GenAI support for LangChain
+langchain-google-genai
+
+# Pydantic v1 models (used by langchain-core)
+pydantic>=1.10
+
+# Back-ports for newer typing features
+typing-extensions
+
+# .env file support for API keys
+python-dotenv
+
+# HTTP requests & parsing
+requests
+
+# Data handling
+pandas
+
+# HTML parsing
+beautifulsoup4
+lxml
+html5lib
+
+# JSON5 support
+json5
