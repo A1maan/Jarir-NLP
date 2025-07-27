@@ -220,3 +220,89 @@ if __name__ == "__main__":
             print(f"✔ Saved {len(rows)} rows → {out}")
 
     print(f"\nAll categories done in {time.time()-all_start:.1f}s")
+
+
+
+
+#def detect_category(raw: dict) -> str:
+    ptyp = (raw.get("ptyp") or "").lower()
+    if "tablet"  in ptyp: return "tablet"
+    if "laptop"  in ptyp: return "laptop"
+    if "desktop" in ptyp: return "desktop"
+    return "other"
+
+COMMON = {
+    # hardware
+    # "prcr":               "sku",
+    "prse":               "cpu_model",
+    "prsd":               "cpu_clock",
+    "grpc":               "gpu_model",
+    "symm":               "ram",
+    "jarir_capa":         "storage",
+    "tsca":               "storage",
+
+    # platform / OS
+    "opsy":               "os",
+    "nepl":               "ai_coprocessor",
+    "apai":               "ai_enabled",
+    "cote":               "connectivity",
+    "port":               "ports",
+
+    # product info
+    "seri":               "series",
+    "ptyp":               "product_type",
+    "brand":              "brand",
+    "model":              "model",
+    # "name":               "product_name",
+    # "sku":                "sku",
+    "url_path":           "url_path",
+
+    # color
+    "jarir_colo":         "color",
+
+    # weight
+    "weig":               "weight_kg",
+    "weight":             "weight_kg",
+
+    # pricing
+    "price":              "regular_price_sar",
+    "special_price":      "sale_price_sar",
+    "jarir_mega_discount":"discount_percent",
+
+    # category
+    # "category":           "category",
+}
+
+LAPTOP_ONLY = {
+    "scsz":       "screen_size_inch",
+    "gere":       "release_date",
+    "scty":       "screen_refresh_rate_hz",
+    "mxrs":       "screen_resolution",
+    "touc":       "touchscreen",
+    "nesu":       "network_speed",
+    "aufe":       "audio_feature",
+    "feat":       "special_features",
+    "jarir_cars": "webcam",
+}
+
+TABLET_ONLY = {
+    "scsz": "screen_size_inch",
+    "scre": "screen_type",
+    # "mxca": "screen_resolution",
+    "scty": "screen_refresh_rate_hz",
+    # "aufe": "audio_feature",
+    "feat": "special_features",
+    # "nesu": "network_speed",
+    "nsim": "sim_slots",
+    # "cars": "camera",             # rear/front combined
+    # "baty": "battery_capacity",
+    # "acce": "accessories_included",
+    # "moos": "os_version",
+}
+
+MAPS = {
+    "desktop": COMMON,
+    "laptop":  {**COMMON, **LAPTOP_ONLY},
+    "tablet":  {**COMMON, **TABLET_ONLY},
+    "other":   COMMON,
+}

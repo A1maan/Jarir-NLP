@@ -167,7 +167,7 @@ COMMON = {
 
     # platform / OS
     "opsy":        "os",
-    "osar":        "os_arch",
+    # "osar":        "os_arch",
     "nepl":        "ai_coprocessor",
     "apai":        "ai_enabled",
     "cote":        "connectivity",
@@ -180,9 +180,9 @@ COMMON = {
     "cofa":        "color",
 
     # dimensions & weight
-    "widt":        "width_cm",
-    "heig":        "height_cm",
-    "dept":        "depth_cm",
+    # "widt":        "width_cm",
+    # "heig":        "height_cm",
+    # "dept":        "depth_cm",
     "weig":        "weight_kg",
     "weight":      "weight_kg",
 
@@ -192,7 +192,7 @@ COMMON = {
     "jarir_mega_discount": "discount_percent",
 
     # misc
-    "item_warranty_code": "warranty_code",
+    # "item_warranty_code": "warranty_code",
     "url_path":          "url_path",
 }
 
@@ -206,12 +206,12 @@ LAPTOP_ONLY = {
     "scty": "screen_refresh_rate_hz",    # ← repurposed
     "mxrs": "screen_resolution",         # ← repurposed
     "touc": "touchscreen",
-    "fing": "fingerprint_reader",
+    # "fing": "fingerprint_reader",
     "nesu": "network_speed",
     "aufe": "audio_feature",
     "feat": "special_features",
     "jarir_cars": "webcam",              # ← repurposed
-    "vren": "vr_ready",
+    # "vren": "vr_ready",
 }
 
 MAPS = {
@@ -241,17 +241,26 @@ def tidy(raw: dict) -> dict:
         r, s = out["regular_price_sar"], out["sale_price_sar"]
         out["discount_percent"] = round(100 * (r - s) / r)
 
-    # single, fully-qualified URL
+    # convert url_path → product_url (add AFTER ordering keys is computed)
+    url_val = None
     if "url_path" in out:
-        out["product_url"] = urljoin("https://www.jarir.com/sa-en/", out.pop("url_path"))
+        url_val = urljoin("https://www.jarir.com/sa-en/", out.pop("url_path"))
 
-    # ── final column order ──
-    # put product_type first, product_url last, everything else in between
-    first  = ["product_type", "series"]   # series now 2nd column
-    last   = ["product_url"]
-    middle = [c for c in out.keys() if c not in first + last]
+    # Desired column order
+    first = ["product_type", "series"]
+    last = ["product_url"]
+    all_possible = set(out.keys()) | {"product_url"}
+    middle = sorted(c for c in all_possible if c not in first + last)
+
     ordered = first + middle + last
-    return {col: out.get(col, "") for col in ordered}
+
+    # build final dict
+    final = {col: out.get(col, "") for col in ordered}
+    if url_val:
+        final["product_url"] = url_val
+    return final
+
+
 
 
 
