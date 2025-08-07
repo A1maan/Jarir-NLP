@@ -1,7 +1,5 @@
-<div style="display: flex; gap: 10em; align-items: center; justify-content: center;">
-  <img src="assets/kaust-academy-logo.png" alt="KAUST Academy Logo" height="80em"/>  
-  <img src="assets/jarir-logo.png" alt="Jarir Logo" height="50em"/>
-  <img src="assets/kaust-logo.png" alt="KAUST Logo" height="80em"/>
+<div>
+  <img src="assets/kaust-academy-logo.png" alt="KAUST Academy Logo" height="80em"/>   <img src="assets/jarir-logo.png" alt="Jarir Logo" height="50em"/> <img src="assets/kaust-logo.png" alt="KAUST Logo" height="80em"/>
 </div>
 <hr>
 
