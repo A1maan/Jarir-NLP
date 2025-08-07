@@ -1,4 +1,4 @@
-<div style="align-items:left">
+<div style="display: flex; justify-content: flex-start; align-items: center; gap: 3em;">
   <img src="assets/kaust-academy-logo.png" alt="KAUST Academy Logo" height="100em" hspace='50'/> <img src="assets/jarir-logo.png" alt="Jarir Logo" height="55em" hspace='50'/> <img src="assets/kaust-logo.png" alt="KAUST Logo" height="100em"/>
 </div>
 <hr>
