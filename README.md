@@ -1,5 +1,5 @@
 <div>
-  <img src="assets/kaust-academy-logo.png" alt="KAUST Academy Logo" height="80em" hspace='10'/> <img src="assets/jarir-logo.png" alt="Jarir Logo" height="50em" hspace='10'/> <img src="assets/kaust-logo.png" alt="KAUST Logo" height="80em"/>
+  <img src="assets/kaust-academy-logo.png" alt="KAUST Academy Logo" height="80em" hspace='50'/> <img src="assets/jarir-logo.png" alt="Jarir Logo" height="50em" hspace='50'/> <img src="assets/kaust-logo.png" alt="KAUST Logo" height="80em"/>
 </div>
 <hr>
 
