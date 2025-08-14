@@ -77,7 +77,7 @@ def create_catalog_index(
 def hybrid_search_catalog(
     specs: Dict[str, str],
     catalog: Dict[str, Any],
-    top_k: int = 5
+    top_k: int = 10
 ) -> List[Dict[str, Any]]:
     """
     General hybrid search over any catalog dict.

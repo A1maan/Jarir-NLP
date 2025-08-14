@@ -53,9 +53,22 @@ export const useChat = () => {
 
       const data = await response.json();
       
+      // Handle both string and array responses from backend
+      let replyText = data.reply || 'Sorry, I couldn\'t get a proper response.';
+      if (Array.isArray(replyText)) {
+        // Join array elements with newlines, but handle JSON blocks specially
+        replyText = replyText.map(part => {
+          if (typeof part === 'string' && part.trim().startsWith('```json')) {
+            // Keep JSON blocks as-is for product card detection
+            return part;
+          }
+          return part;
+        }).join('\n\n');
+      }
+      
       const aiMessage = {
         id: Date.now() + 1,
-        text: data.reply || 'Sorry, I couldn\'t get a proper response.',
+        text: replyText,
         isUser: false,
         timestamp: new Date()
       };

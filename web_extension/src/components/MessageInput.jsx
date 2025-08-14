@@ -23,7 +23,7 @@ const MessageInput = ({
   return (
     <form 
       onSubmit={handleSubmit} 
-      className="flex items-start gap-2 p-3 border-t border-gray-200 bg-white flex-shrink-0"
+      className="flex items-start gap-2 p-3 bg-white flex-shrink-0"
       onWheel={(e) => e.stopPropagation()}
     >
       <div className="flex-1">

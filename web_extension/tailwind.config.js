@@ -5,8 +5,8 @@ export default {
     extend: {
       colors: {
         jarir: {
-          red: '#DC2626',
-          blue: '#3B82F6',
+          red: '#b20000',
+          blue: '#0077b6',
           gray: {
             50: '#F9FAFB',
             100: '#F3F4F6',

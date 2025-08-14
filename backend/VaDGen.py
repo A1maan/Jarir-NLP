@@ -29,11 +29,12 @@ def create_catalog_index(
     # 1) Load & prepare DataFrame
     df = pd.read_csv(csv_path)
     df = df.reset_index().rename(columns={"index": "id"})
-
+    
     # Ensure spec columns exist
     missing = [c for c in spec_columns if c not in df.columns]
+    print(missing)
     if missing:
-        raise ValueError(f"Missing expected columns in CSV: {missing}")
+        raise ValueError(f"Missing expected columns in CSV: {missing}"+df.head().to_string())
 
     # Build the combined spec_text column
     df["spec_text"] = (
@@ -76,7 +77,7 @@ def create_catalog_index(
 def hybrid_search_catalog(
     specs: Dict[str, str],
     catalog: Dict[str, Any],
-    top_k: int = 5
+    top_k: int = 10
 ) -> List[Dict[str, Any]]:
     """
     General hybrid search over any catalog dict.
