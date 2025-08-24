@@ -3,6 +3,9 @@ FastAPI wrapper exposing /chat for the browser extension.
 Run with:  uvicorn app:app --reload
 """
 
+#testing time
+import time
+
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware

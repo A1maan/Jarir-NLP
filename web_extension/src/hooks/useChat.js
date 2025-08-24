@@ -53,17 +53,24 @@ export const useChat = () => {
 
       const data = await response.json();
       
-      // Handle both string and array responses from backend
-      let replyText = data.reply || 'Sorry, I couldn\'t get a proper response.';
+      // Handle string, object, and array responses from backend
+      let replyText = data.reply ?? 'Sorry, I couldn\'t get a proper response.';
+
+      // If the reply is an array, stringify any object elements and join
       if (Array.isArray(replyText)) {
-        // Join array elements with newlines, but handle JSON blocks specially
-        replyText = replyText.map(part => {
-          if (typeof part === 'string' && part.trim().startsWith('```json')) {
-            // Keep JSON blocks as-is for product card detection
-            return part;
-          }
-          return part;
-        }).join('\n\n');
+        replyText = replyText
+          .map((part) => {
+            if (part && typeof part === 'object') {
+              // Wrap objects in a JSON code block for product card detection
+              return '```json\n' + JSON.stringify(part, null, 2) + '\n```';
+            }
+            // Keep JSON code blocks intact; otherwise return as-is
+            return typeof part === 'string' ? part : String(part);
+          })
+          .join('\n\n');
+      } else if (replyText && typeof replyText === 'object') {
+        // Single object response: wrap in JSON code block
+        replyText = '```json\n' + JSON.stringify(replyText, null, 2) + '\n```';
       }
       
       const aiMessage = {

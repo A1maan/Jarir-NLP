@@ -27,3 +27,7 @@ __pycache__/
 
 # VS Code settings
 .vscode/
+
+# Obsidian config and notes
+.obsidian/
+notes/

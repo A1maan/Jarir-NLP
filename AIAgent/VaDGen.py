@@ -74,88 +74,144 @@ def create_catalog_index(
 
 
 
+# def hybrid_search_catalog(
+#     specs: Dict[str, str],
+#     catalog: Dict[str, Any],
+#     top_k: int = 10
+# ) -> List[Dict[str, Any]]:
+#     """
+#     General hybrid search over any catalog dict.
+
+#     specs: dict of field→value to match (e.g. {"series":"Predator","cpu_model":"i7-12700H"})
+#     catalog: {
+#       "df": DataFrame,
+#       "embed_model": SentenceTransformer,
+#       "embeddings": np.ndarray,
+#       "index": faiss.IndexFlatIP,
+#       "metadata": DataFrame  # must have "id" plus all possible spec columns
+#     }
+#     """
+#     df          = catalog["df"]
+#     embed_model = catalog["embed_model"]
+#     embeddings  = catalog["embeddings"]
+#     index       = catalog["index"]
+#     metadata    = catalog["metadata"]
+#     dim         = embeddings.shape[1]
+
+#     # 1) keep only non‐empty specs
+#     specs = {k: v for k, v in specs.items() if v}
+
+#     # 2) pandas filter on exactly those keys
+#     sub = df
+#     for col, val in specs.items():
+#         sub = sub[sub[col].astype(str).str.lower() == val.lower()]
+
+#     if not sub.empty:
+#         candidate_idx, level = sub.index.to_list(), "exact"
+#     else:
+#         # 3) relaxed: drop the last key if more than one
+#         keys = list(specs.keys())
+#         if len(keys) > 1:
+#             relaxed = dict(specs)
+#             relaxed.pop(keys[-1])
+#             sub2 = df
+#             for col, val in relaxed.items():
+#                 sub2 = sub2[sub2[col].astype(str).str.lower() == val.lower()]
+#             if not sub2.empty:
+#                 candidate_idx, level = sub2.index.to_list(), "partial"
+#             else:
+#                 candidate_idx, level = list(range(len(df))), "vector"
+#         else:
+#             candidate_idx, level = list(range(len(df))), "vector"
+
+#     # 4) build query vector
+#     query_text = " ".join(specs.values()) if specs else ""
+#     q_vec = embed_model.encode([query_text], convert_to_numpy=True)
+#     faiss.normalize_L2(q_vec)
+
+#     # 5) FAISS search
+#     if level == "vector":
+#         D, I = index.search(q_vec, top_k)
+#     else:
+#         sub_emb = embeddings[np.array(candidate_idx)]
+#         tmp = faiss.IndexFlatIP(dim)
+#         tmp.add(sub_emb)
+#         D, I = tmp.search(q_vec, min(len(candidate_idx), top_k))
+#         I = [[candidate_idx[i] for i in hits] for hits in I]
+
+#     # 6) format results using only the keys you actually queried
+#     results = []
+#     for score, idx in zip(D[0], I[0]):
+#         # lookup by row‐index
+#         row = metadata.loc[metadata["id"] == int(df.loc[idx, "id"])].iloc[0]
+#         entry = {
+#             "id":           int(row["id"]),
+#             "score":        float(score),
+#             "matched_level": level,
+#         }
+#         # only include the fields you passed in specs
+#         for k in specs.keys():
+#             entry[k] = row[k]
+#         results.append(entry)
+
+#     return results
+
+
+
 def hybrid_search_catalog(
     specs: Dict[str, str],
     catalog: Dict[str, Any],
-    top_k: int = 10
+    top_k: int = 20,
 ) -> List[Dict[str, Any]]:
     """
-    General hybrid search over any catalog dict.
+    Multi-level exact CSV search (no embeddings), with exact-match items ranked first.
 
-    specs: dict of field→value to match (e.g. {"series":"Predator","cpu_model":"i7-12700H"})
-    catalog: {
-      "df": DataFrame,
-      "embed_model": SentenceTransformer,
-      "embeddings": np.ndarray,
-      "index": faiss.IndexFlatIP,
-      "metadata": DataFrame  # must have "id" plus all possible spec columns
-    }
+    Ranking priority
+    ----------------
+    1. Matches **all** provided keys (full-spec matches) – preserve dataframe order
+    2. Matches N-1 keys (“drop-one” matches) – preserve dataframe order
+    3. Remaining ties keep their original order in the dataframe
+
+    Returns at most `top_k` items as [{'id': ...}, …]
     """
-    df          = catalog["df"]
-    embed_model = catalog["embed_model"]
-    embeddings  = catalog["embeddings"]
-    index       = catalog["index"]
-    metadata    = catalog["metadata"]
-    dim         = embeddings.shape[1]
+    df        = catalog["df"].copy()
+    id_col    = "id"
+    price_col = "price"
 
-    # 1) keep only non‐empty specs
-    specs = {k: v for k, v in specs.items() if v}
+    # 1) budget filter
+    try:
+        df = df[df[price_col] <= float(specs["price"])]
+    except (KeyError, ValueError, TypeError):
+        pass
 
-    # 2) pandas filter on exactly those keys
-    sub = df
-    for col, val in specs.items():
-        sub = sub[sub[col].astype(str).str.lower() == val.lower()]
+    # 2) build filter dict
+    search_keys = ["brand", "model", "cpu_model", "ram", "storage", "gpu_model"]
+    base = {k: specs[k] for k in search_keys if specs.get(k)}
 
-    if not sub.empty:
-        candidate_idx, level = sub.index.to_list(), "exact"
-    else:
-        # 3) relaxed: drop the last key if more than one
-        keys = list(specs.keys())
-        if len(keys) > 1:
-            relaxed = dict(specs)
-            relaxed.pop(keys[-1])
-            sub2 = df
-            for col, val in relaxed.items():
-                sub2 = sub2[sub2[col].astype(str).str.lower() == val.lower()]
-            if not sub2.empty:
-                candidate_idx, level = sub2.index.to_list(), "partial"
-            else:
-                candidate_idx, level = list(range(len(df))), "vector"
-        else:
-            candidate_idx, level = list(range(len(df))), "vector"
+    def _filter_exact(d: pd.DataFrame, f: Dict[str, str]) -> pd.DataFrame:
+        sub = d
+        for col, val in f.items():
+            sub = sub[sub[col].astype(str).str.lower() == val.lower()]
+        return sub
 
-    # 4) build query vector
-    query_text = " ".join(specs.values()) if specs else ""
-    q_vec = embed_model.encode([query_text], convert_to_numpy=True)
-    faiss.normalize_L2(q_vec)
+    seen_ids: set[str] = set()
+    ordered_ids: list[str] = []
 
-    # 5) FAISS search
-    if level == "vector":
-        D, I = index.search(q_vec, top_k)
-    else:
-        sub_emb = embeddings[np.array(candidate_idx)]
-        tmp = faiss.IndexFlatIP(dim)
-        tmp.add(sub_emb)
-        D, I = tmp.search(q_vec, min(len(candidate_idx), top_k))
-        I = [[candidate_idx[i] for i in hits] for hits in I]
+    # 3) full-spec pass  ➜ highest priority
+    full_matches = _filter_exact(df, base)
+    for _id in full_matches[id_col]:
+        if _id not in seen_ids:
+            ordered_ids.append(_id)
+            seen_ids.add(_id)
 
-    # 6) format results using only the keys you actually queried
-    results = []
-    for score, idx in zip(D[0], I[0]):
-        # lookup by row‐index
-        row = metadata.loc[metadata["id"] == int(df.loc[idx, "id"])].iloc[0]
-        entry = {
-            "id":           int(row["id"]),
-            "score":        float(score),
-            "matched_level": level,
-        }
-        # only include the fields you passed in specs
-        for k in specs.keys():
-            entry[k] = row[k]
-        results.append(entry)
+    # 4) drop-one passes  ➜ lower priority but still exact on remaining keys
+    for drop_key in base:
+        filt = {k: v for k, v in base.items() if k != drop_key}
+        part_matches = _filter_exact(df, filt)
+        for _id in part_matches[id_col]:
+            if _id not in seen_ids:
+                ordered_ids.append(_id)
+                seen_ids.add(_id)
 
-    return results
-
-
-
-
+    # 5) format & truncate
+    return [{"id": _id} for _id in ordered_ids[:top_k]]

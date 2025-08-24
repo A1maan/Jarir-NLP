@@ -13,7 +13,7 @@ EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 # Define the catalog index for  gaming laptops
 GAMING_CSV_PATH = "../Jarir-scraper/jarir_gaming_pcs.csv"
-GAMING_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage"]  
+GAMING_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage","price"]  
 gaming_laptop_catalog = create_catalog_index(GAMING_CSV_PATH, GAMING_SPEC_COLUMNS, EMBEDDING_MODEL)
 
 
@@ -28,11 +28,12 @@ def check_gaming_laptops(specs: Dict[str, str]):
        "model":"Predator",
        "cpu_model":"i7-12700H",
        "gpu_model":"RTX3070",
-       "ram":"16GB",
-       "storage":"512GB"}
+       "ram":"16 GB RAM",
+       "storage":"512GB"
+       "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, gaming_laptop_catalog, top_k=10)
+    candidates = hybrid_search_catalog(specs, gaming_laptop_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -81,7 +82,7 @@ def check_gaming_laptops(specs: Dict[str, str]):
 # Define the catalog index for  laptops
 
 LAPTOP_CSV_PATH = "../Jarir-scraper/jarir_laptops.csv"
-LAPTOP_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage", "renewed"]  
+LAPTOP_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage", "renewed","price"]  
 LAPTOP_catalog = create_catalog_index(LAPTOP_CSV_PATH, LAPTOP_SPEC_COLUMNS, EMBEDDING_MODEL)
 
 
@@ -96,12 +97,13 @@ def check_laptops(specs: Dict[str, str]):
        "model":"Predator",
        "cpu_model":"Intel Core Ultra 7",
        "gpu_model":"Qualcomm Adreno GPU",
-       "ram":"16GB",
+       "ram":"16 GB RAM",
        "storage":"512GB",
-       "renewed"":"renewed or new"}
+       "renewed"":"renewed or new",
+       "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, LAPTOP_catalog, top_k=10)
+    candidates = hybrid_search_catalog(specs, LAPTOP_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -156,7 +158,7 @@ def check_laptops(specs: Dict[str, str]):
 # Define the catalog index for  Tablets
 
 TABLET_CSV_PATH = "../Jarir-scraper/jarir_tablets.csv"
-TABLET_SPEC_COLUMNS = ["brand", "model", "cpu_clock","ram", "storage","color", "renewed"]  
+TABLET_SPEC_COLUMNS = ["brand", "model", "cpu_clock","ram", "storage","color", "renewed","price"]  
 TABLET_catalog = create_catalog_index(TABLET_CSV_PATH, TABLET_SPEC_COLUMNS, EMBEDDING_MODEL)
 
 
@@ -170,14 +172,15 @@ def check_tablets(specs: Dict[str, str]):
       {"brand":"Acer",
        "model":"Predator",
        "cpu_clock":"1.8 GHz",
-       "ram":"16GB",
+       "ram":"16 GB RAM",
        "storage":"512GB",
        "color":"Black"
-       "renewed":"renewed or new"}
+       "renewed":"renewed or new",
+       "price":""}
 
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, TABLET_catalog, top_k=10)
+    candidates = hybrid_search_catalog(specs, TABLET_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -240,7 +243,7 @@ def check_tablets(specs: Dict[str, str]):
 # Define the catalog index for  2in1 laptops
 
 twoin1_CSV_PATH = "../Jarir-scraper/jarir_twoin1_laptops.csv"
-twoin1_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage"]  
+twoin1_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 twoin1_catalog = create_catalog_index(twoin1_CSV_PATH, twoin1_SPEC_COLUMNS, EMBEDDING_MODEL)
 
 
@@ -254,12 +257,13 @@ def check_twoin1(specs: Dict[str, str]):
       {"brand":"Acer",
        "model":"Predator",
        "cpu_model":"",
-       "ram":"16GB",
+       "ram":"16 GB RAM",
        "storage":"512GB",
-       "gpu_model":""}
+       "gpu_model":"",
+       "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, twoin1_catalog, top_k=10)
+    candidates = hybrid_search_catalog(specs, twoin1_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -312,8 +316,8 @@ def check_twoin1(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  desktops
 
-DESKTOPS_CSV_PATH = "../Jarir-scraper/jarir_desktops.csv"
-DESKTOPS_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage"]  
+DESKTOPS_CSV_PATH = "../Jarir-scraper/jarir_AIO.csv"
+DESKTOPS_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 DESKTOPS_catalog = create_catalog_index(DESKTOPS_CSV_PATH, DESKTOPS_SPEC_COLUMNS, EMBEDDING_MODEL)
 
 
@@ -327,12 +331,13 @@ def check_desktops(specs: Dict[str, str]):
       {"brand":"Acer",
        "model":"Predator",
        "cpu_model":"",
-       "ram":"16GB",
+       "ram":"16 GB RAM",
        "storage":"512GB",
-       "gpu_model":""}
+       "gpu_model":"",
+       "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, DESKTOPS_catalog, top_k=10)
+    candidates = hybrid_search_catalog(specs, DESKTOPS_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -376,14 +381,82 @@ def check_desktops(specs: Dict[str, str]):
         "results": rows,
     }
     
+#-------------------------------------------------------------------------------------------------
+# Define the catalog index for  AIO devices 
+
+AIO_CSV_PATH = "../Jarir-scraper/jarir_AIO.csv"
+AIO_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage", "price"]  
+AIO_catalog = create_catalog_index(AIO_CSV_PATH, AIO_SPEC_COLUMNS, EMBEDDING_MODEL)
+
+
+
+
+
+def check_AIO(specs: Dict[str, str]):
+    """
+    Give the specs as a dictionary with the following keys:
+   - a Python dict, e.g:
+      {"brand":"Acer",
+       "model":"Predator",
+       "cpu_model":"",
+       "ram":"16 GB RAM",
+       "storage":"512GB",
+       "gpu_model":"",
+       "price":""}
+    """
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = hybrid_search_catalog(specs, AIO_catalog)
+    if not candidates:
+        return "No similar products  found."
+
+    # grab the DataFrame out of the catalog
+    df = AIO_catalog["df"]
+
+    rows = []
+    for c in candidates:
+        # find the matching row by its id
+        row = (
+            df.loc[df["id"] == c["id"]]
+              .iloc[0]                   # get the single matching record
+              .to_dict()
+        )
+        rows.append(row)
+
+    # prompt = f"""
+    # I need a product matching these specs: {specs}.
+    # Here are 5 candidate products:
+    # {rows}
+    # Please rank them from best to worst match and briefly explain why.
+    # Return only JSON in the form:
+    #   [
+    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
+    #     …
+    #   ]
+    # """
+
+    # # 3) invoke the LLM for the final ranking
+    # res = llm.invoke([
+    #     SystemMessage(content="You are an expert at matching products to user specs."),
+    #     HumanMessage(content=prompt)
+    # ])
+    # llm_output = res.content  # e.g. JSON string of id+reason
+    # ranking = json.loads(llm_output)
+    # return {
+    #   "results": rows,      # full spec dicts
+    #   "ranking": ranking    # id + match_level + reason
+    # }
+    return{
+        "results": rows,
+    }
     
+       
 
 
 
 #---------------------------------------------------------
 # Get available models for the required brand
 
-csv_paths = [GAMING_CSV_PATH, LAPTOP_CSV_PATH, TABLET_CSV_PATH , twoin1_CSV_PATH , DESKTOPS_CSV_PATH]
+csv_paths = [GAMING_CSV_PATH, LAPTOP_CSV_PATH, TABLET_CSV_PATH , twoin1_CSV_PATH , DESKTOPS_CSV_PATH, AIO_CSV_PATH]
 
 import pandas as pd
 from pathlib import Path
@@ -451,7 +524,7 @@ def build_product_type_first_map(csv_paths: List[str]) -> Dict[str, Dict[str, Li
         product_type → { brand → sorted list of unique models }.
 
     product_type will be one of:
-      ['gaming', 'laptop', 'tablet', 'twoin1_laptop', 'desktops']
+      ['gaming', 'laptop', 'tablet', 'twoin1_laptop', 'desktops','AIO']
     """
     nested_map: Dict[str, Dict[str, List[str]]] = {}
 
@@ -486,8 +559,14 @@ product_type_map = build_product_type_first_map(csv_paths)
 
 def retrieve_information_about_product_type(product_type: str) -> Dict[str, List[str]]:
     """
-    These are the available product_type ['gaming', 'laptop', 'tablet', 'twoin1_laptop', 'desktops']
+    These are the available product_type ['gaming', 'laptop', 'tablet', 'twoin1_laptop', 'desktops','AIO']
     Given a product type, returns a dict mapping each brand
     to the list of models available under that product_type.
     """
-    return product_type_map.get(product_type, {})
+    return product_type_map.get(product_type.lower(), {})
+
+
+
+
+
+#----------------------------------------------------------
