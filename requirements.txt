@@ -1,33 +1,42 @@
-# Graph construction & checkpoints
-langgraph
-
-# LangChain core abstractions
+aiohttp
+aiosignal
+aiosqlite
+altair
+annotated-types
+anthropic
+anyio
+appnope
+attrs
+decorator
+faiss-cpu
+fastapi
+filetype
+httpx
+ipykernel
+jsonpatch
+jsonpointer
+jsonschema
+langchain
+langchain-community
 langchain-core
-
-# Google GenAI support for LangChain
+langchain-experimental
 langchain-google-genai
-
-# Pydantic v1 models (used by langchain-core)
-pydantic>=1.10
-
-# Back-ports for newer typing features
-typing-extensions
-
-# .env file support for API keys
-python-dotenv
-
-# HTTP requests & parsing
-requests
-
-# Data handling
+langgraph
+mypy-extensions
+nltk
+numpy
+openai
 pandas
-
-# HTML parsing
-beautifulsoup4
-lxml
-html5lib
-
-# JSON5 support
-json5
-
-langgraph.checkpoint.sqlite
+pydeck
+pygments
+pyjson5
+python-dotenv
+scikit-learn
+sentence-transformers
+six
+streamlit
+threadpoolctl
+torch
+tqdm
+typing-extensions
+uvicorn[standard]
