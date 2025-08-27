@@ -1,5 +1,5 @@
-from VaDGen import hybrid_search_catalog
-from VaDGen import create_catalog_index
+from AIAgent.dbSearch import hybrid_search_catalog
+from AIAgent.dbSearch import create_catalog_index
 from typing import Set, TypedDict, List, Dict, Any, Optional
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, AIMessage, ChatMessage

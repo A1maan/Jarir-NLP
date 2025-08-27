@@ -1,25 +1,38 @@
-from VaDGen import hybrid_search_catalog
-from VaDGen import create_catalog_index
-from typing import List, Dict, Any, Optional
-from pathlib import Path
+from dbSearch import exact_search_catalog
+from dbSearch import create_catalog_index
+from typing import Set, TypedDict, List, Dict, Any, Optional
+from langchain.chat_models import init_chat_model
+from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, AIMessage, ChatMessage
 from langchain_core.tools import tool
 import json
 import pandas as pd
-from agent_core import display_product_recommendations
+from typing import List, Dict, Any
+from langchain_core.tools import tool
 from pydantic import BaseModel, Field, ConfigDict, AliasChoices
+from pathlib import Path
+
 
 
 llm = init_chat_model("google_genai:gemini-2.5-flash")
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
 
-# Define the catalog index for  gaming laptops
-GAMING_CSV_PATH = "../Jarir-scraper/jarir_gaming_pcs.csv"
+
+
+
+PROJECT_ROOT = Path(__file__).parent.parent
+
+# Define absolute paths to CSV files
+GAMING_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_gaming_pcs.csv"
+LAPTOP_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_laptops.csv"
+TABLET_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_tablets.csv"
+twoin1_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_twoin1_laptops.csv"
+DESKTOPS_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_AIO.csv"
+AIO_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_AIO.csv"
+
+
 GAMING_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage","price"]  
 gaming_laptop_catalog = create_catalog_index(GAMING_CSV_PATH, GAMING_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
 
 
 def check_gaming_laptops(specs: Dict[str, str]):
@@ -34,21 +47,25 @@ def check_gaming_laptops(specs: Dict[str, str]):
        "storage":"512GB"
        "price":""}
     """
-    candidates = hybrid_search_catalog(specs, gaming_laptop_catalog)
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = exact_search_catalog(specs, gaming_laptop_catalog)
     if not candidates:
         return "No similar products  found."
 
+    # grab the DataFrame out of the catalog
     df = gaming_laptop_catalog["df"]
 
     rows = []
     for c in candidates:
+        # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]
+              .iloc[0]                   # get the single matching record
               .to_dict()
         )
         rows.append(row)
 
+    
     return{
         "results": rows,
     }
@@ -57,7 +74,6 @@ def check_gaming_laptops(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  laptops
 
-LAPTOP_CSV_PATH = "../Jarir-scraper/jarir_laptops.csv"
 LAPTOP_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage", "renewed","price"]  
 LAPTOP_catalog = create_catalog_index(LAPTOP_CSV_PATH, LAPTOP_SPEC_COLUMNS, EMBEDDING_MODEL)
 
@@ -75,24 +91,28 @@ def check_laptops(specs: Dict[str, str]):
        "gpu_model":"Qualcomm Adreno GPU",
        "ram":"16 GB RAM",
        "storage":"512GB",
-       "renewed":"renewed or new",
+       "renewed"":"renewed or new",
        "price":""}
     """
-    candidates = hybrid_search_catalog(specs, LAPTOP_catalog)
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = exact_search_catalog(specs, LAPTOP_catalog)
     if not candidates:
         return "No similar products  found."
 
+    # grab the DataFrame out of the catalog
     df = LAPTOP_catalog["df"]
 
     rows = []
     for c in candidates:
+        # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]
+              .iloc[0]                   # get the single matching record
               .to_dict()
         )
         rows.append(row)
 
+    
     return{
         "results": rows,
     }
@@ -107,7 +127,6 @@ def check_laptops(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  Tablets
 
-TABLET_CSV_PATH = "../Jarir-scraper/jarir_tablets.csv"
 TABLET_SPEC_COLUMNS = ["brand", "model", "cpu_clock","ram", "storage","color", "renewed","price"]  
 TABLET_catalog = create_catalog_index(TABLET_CSV_PATH, TABLET_SPEC_COLUMNS, EMBEDDING_MODEL)
 
@@ -129,20 +148,35 @@ def check_tablets(specs: Dict[str, str]):
        "price":""}
 
     """
-    candidates = hybrid_search_catalog(specs, TABLET_catalog)
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = exact_search_catalog(specs, TABLET_catalog)
     if not candidates:
         return "No similar products  found."
 
+    # grab the DataFrame out of the catalog
     df = TABLET_catalog["df"]
 
     rows = []
     for c in candidates:
+        # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]
+              .iloc[0]                   # get the single matching record
               .to_dict()
         )
         rows.append(row)
+
+    prompt = f"""
+    I need a product matching these specs: {specs}.
+    Here are 5 candidate products:
+    {rows}
+    Please rank them from best to worst match and briefly explain why.
+    Return only JSON in the form:
+      [
+        {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
+        …
+      ]
+    """
 
     return{
         "results": rows,
@@ -153,7 +187,6 @@ def check_tablets(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  2in1 laptops
 
-twoin1_CSV_PATH = "../Jarir-scraper/jarir_twoin1_laptops.csv"
 twoin1_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 twoin1_catalog = create_catalog_index(twoin1_CSV_PATH, twoin1_SPEC_COLUMNS, EMBEDDING_MODEL)
 
@@ -173,21 +206,25 @@ def check_twoin1(specs: Dict[str, str]):
        "gpu_model":"",
        "price":""}
     """
-    candidates = hybrid_search_catalog(specs, twoin1_catalog)
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = exact_search_catalog(specs, twoin1_catalog)
     if not candidates:
         return "No similar products  found."
 
+    # grab the DataFrame out of the catalog
     df = twoin1_catalog["df"]
 
     rows = []
     for c in candidates:
+        # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]
+              .iloc[0]                   # get the single matching record
               .to_dict()
         )
         rows.append(row)
 
+    
     return{
         "results": rows,
     }
@@ -201,7 +238,6 @@ def check_twoin1(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  desktops
 
-DESKTOPS_CSV_PATH = "../Jarir-scraper/jarir_AIO.csv"
 DESKTOPS_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 DESKTOPS_catalog = create_catalog_index(DESKTOPS_CSV_PATH, DESKTOPS_SPEC_COLUMNS, EMBEDDING_MODEL)
 
@@ -221,21 +257,25 @@ def check_desktops(specs: Dict[str, str]):
        "gpu_model":"",
        "price":""}
     """
-    candidates = hybrid_search_catalog(specs, DESKTOPS_catalog)
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = exact_search_catalog(specs, DESKTOPS_catalog)
     if not candidates:
         return "No similar products  found."
 
+    # grab the DataFrame out of the catalog
     df = DESKTOPS_catalog["df"]
 
     rows = []
     for c in candidates:
+        # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]
+              .iloc[0]                   # get the single matching record
               .to_dict()
         )
         rows.append(row)
 
+    
     return{
         "results": rows,
     }
@@ -243,7 +283,6 @@ def check_desktops(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  AIO devices 
 
-AIO_CSV_PATH = "../Jarir-scraper/jarir_AIO.csv"
 AIO_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage", "price"]  
 AIO_catalog = create_catalog_index(AIO_CSV_PATH, AIO_SPEC_COLUMNS, EMBEDDING_MODEL)
 
@@ -263,21 +302,25 @@ def check_AIO(specs: Dict[str, str]):
        "gpu_model":"",
        "price":""}
     """
-    candidates = hybrid_search_catalog(specs, AIO_catalog)
+    # 1) get the top 5 candidates via our hybrid search
+    candidates = exact_search_catalog(specs, AIO_catalog)
     if not candidates:
         return "No similar products  found."
 
+    # grab the DataFrame out of the catalog
     df = AIO_catalog["df"]
 
     rows = []
     for c in candidates:
+        # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]
+              .iloc[0]                   # get the single matching record
               .to_dict()
         )
         rows.append(row)
 
+   
     return{
         "results": rows,
     }
@@ -436,10 +479,14 @@ def _map_raw_product_to_card(product: Dict[str, Any]) -> Optional[Dict[str, Any]
         price_value: Optional[float] = None
         for pf in ("sale_price_sar", "price", "regular_price_sar"):
             val = product.get(pf)
-            if val not in (None, "", "NaN", "nan") and str(val).strip():
+            # Check for valid numeric values (not NaN, None, empty, etc.)
+            if val is not None and str(val).strip() and str(val).lower() not in ('nan', 'null', 'none', ''):
                 try:
-                    price_value = float(str(val).replace("SAR", "").replace(",", "").strip())
-                    break
+                    # Additional check for pandas NaN
+                    import math
+                    if not (isinstance(val, float) and math.isnan(val)):
+                        price_value = float(str(val).replace("SAR", "").replace(",", "").strip())
+                        break
                 except (ValueError, TypeError):
                     continue
         if price_value is None:
@@ -546,8 +593,12 @@ def consolidate_products(products: Any) -> List[Dict[str, Any]]:
     # Build final list with min price and helpful badges
     final_list: List[Dict[str, Any]] = []
     for g in groups.values():
-        price_min = min(g["prices"]) if g["prices"] else 0.0
-        price_max = max(g["prices"]) if g["prices"] else 0.0
+        # Filter out None/invalid prices before min/max
+        valid_prices = [p for p in g["prices"] if p is not None and p > 0]
+        if not valid_prices:
+            continue  # Skip products with no valid prices
+        price_min = min(valid_prices)
+        price_max = max(valid_prices)
         price_str = f"{price_min} SAR" if price_min == price_max else f"{price_min} - {price_max} SAR"
         colors_label = ", ".join([c for c in g["colors"] if c]) or "N/A"
 
@@ -646,6 +697,8 @@ def get_product_recommendations(
     product_category = product_type or (f"{brand} laptops" if brand else "laptops")
     heading = f"Here are some recommendations for {product_category}"
     # display tool is also a tool; invoke with structured args
+    from agent_core import display_product_recommendations
+
     final_json = display_product_recommendations.invoke({
         "heading": heading,
         "items": consolidated_list,
