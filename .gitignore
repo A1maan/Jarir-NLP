@@ -31,3 +31,7 @@ __pycache__/
 KAUST_AI_POSTER.pptx
 
 Submission Material/
+
+# Obsidian config and notes
+.obsidian/
+notes/

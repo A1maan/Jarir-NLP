@@ -1,5 +1,5 @@
-from AIAgent.dbSearch import hybrid_search_catalog
-from AIAgent.dbSearch import create_catalog_index
+from dbSearch import exact_search_catalog
+from dbSearch import create_catalog_index
 from typing import Set, TypedDict, List, Dict, Any, Optional
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, AIMessage, ChatMessage
@@ -33,7 +33,7 @@ def check_gaming_laptops(specs: Dict[str, str]):
        "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, gaming_laptop_catalog)
+    candidates = exact_search_catalog(specs, gaming_laptop_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -103,7 +103,7 @@ def check_laptops(specs: Dict[str, str]):
        "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, LAPTOP_catalog)
+    candidates = exact_search_catalog(specs, LAPTOP_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -180,7 +180,7 @@ def check_tablets(specs: Dict[str, str]):
 
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, TABLET_catalog)
+    candidates = exact_search_catalog(specs, TABLET_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -263,7 +263,7 @@ def check_twoin1(specs: Dict[str, str]):
        "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, twoin1_catalog)
+    candidates = exact_search_catalog(specs, twoin1_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -337,7 +337,7 @@ def check_desktops(specs: Dict[str, str]):
        "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, DESKTOPS_catalog)
+    candidates = exact_search_catalog(specs, DESKTOPS_catalog)
     if not candidates:
         return "No similar products  found."
 
@@ -405,7 +405,7 @@ def check_AIO(specs: Dict[str, str]):
        "price":""}
     """
     # 1) get the top 5 candidates via our hybrid search
-    candidates = hybrid_search_catalog(specs, AIO_catalog)
+    candidates = exact_search_catalog(specs, AIO_catalog)
     if not candidates:
         return "No similar products  found."
 
