@@ -72,7 +72,7 @@ Jarir-NLP/
 ### Prerequisites
 - Python 3.8+
 - Node.js 16+ and npm
-- Modern web browser (Chrome/Edge recommended)
+- Modern web browser (Firefox)
 - Recommended: Create a virtual environment
 
 ### Installation
@@ -106,11 +106,11 @@ uvicorn app:app --reload
 The FastAPI server will start on `http://localhost:8000` with auto-reload enabled.
 
 #### 2. Load the Browser Extension
-1. Open your browser and go to `chrome://extensions/` (or `edge://extensions/`)
-2. Enable "Developer mode" (toggle in top right)
-3. Click "Load unpacked"
-4. Select the `web_extension/dist` folder
-5. The extension should now be loaded and active
+1.	Open Firefox and type about:debugging#/runtime/this-firefox in the address bar.
+2.	In the left sidebar, click “This Firefox.”
+3.	Click the button “Load Temporary Add-on…”
+4.	In the file picker that opens, navigate to your web_extension/dist folder and select the manifest.json file (or any file inside that folder).
+5.	The extension will now be loaded temporarily and will remain active until you close Firefox.
 
 #### 3. Use the AI Salesman
 1. Navigate to [jarir.com](https://jarir.com)
