@@ -122,14 +122,7 @@ The FastAPI server will start on `http://localhost:8000` with auto-reload enable
    - "I need a tablet for digital art"
    - "Compare these laptops for performance"
    - "What's the best value gaming PC?"
-
-### Data Collection
-Run the web scraper to update product data:
-```bash
-cd Jarir-scraper
-python scraper_with_img.py
-```
-
+     
 ## Development
 
 ### Backend Development
