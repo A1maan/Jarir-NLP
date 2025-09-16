@@ -26,7 +26,6 @@ Jarir-NLP/
 │   ├── AIAgent.ipynb          # Main AI agent development notebook
 │   ├── dbSearch.ipynb         # Database search experiments
 │   ├── dbSearch.py           # Database search implementation
-│   ├── test.ipynb            # Testing and experimentation
 │   └── tools.py              # AI agent tools and utilities
 ├── backend/
 │   ├── agent_core.py         # Core AI agent logic
