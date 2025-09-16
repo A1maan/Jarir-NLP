@@ -4,8 +4,6 @@ import faiss
 from typing import List, Dict, Any
 import numpy as np
 
-
-
 def create_catalog_index(
     csv_path: str,
     spec_columns: List[str],
@@ -70,12 +68,6 @@ def create_catalog_index(
         "index": index,
         "metadata": metadata
     }
-
-
-
-
-
-
 
 def exact_search_catalog(
     specs: Dict[str, str],

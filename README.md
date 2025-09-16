@@ -26,24 +26,20 @@ Jarir-NLP/
 │   ├── AIAgent.ipynb          # Main AI agent development notebook
 │   ├── dbSearch.ipynb         # Database search experiments
 │   ├── dbSearch.py           # Database search implementation
-│   ├── ST.py                 # Streamlit interface components
 │   ├── test.ipynb            # Testing and experimentation
-│   └── Tools.py              # AI agent tools and utilities
+│   └── tools.py              # AI agent tools and utilities
 ├── backend/
 │   ├── agent_core.py         # Core AI agent logic
 │   ├── app.py               # FastAPI backend application
 │   ├── dbSearch.py          # Backend database search functionality
-│   └── Tools.py             # Backend utility tools
-├── Jarir-scraper/
-│   ├── initial_scraper.py    # Initial web scraping implementation
-│   ├── scraper_with_img.py   # Enhanced scraper with image handling
+│   └── tools.py             # Backend utility tools
+├── data/
 │   ├── *.csv                # Scraped product data files
 │   │   ├── jarir_AIO.csv     # All-in-one computers
 │   │   ├── jarir_gaming_pcs.csv # Gaming PCs
 │   │   ├── jarir_laptops.csv # Laptops
 │   │   ├── jarir_tablets.csv # Tablets
 │   │   └── jarir_twoin1_laptops.csv # 2-in-1 laptops
-│   ├── csv_cleanup/         # Data cleaning utilities
 │   └── unused_files/        # Legacy scrapers and unused data
 ├── web_extension/
 │   ├── manifest.json        # Browser extension manifest (Manifest V3)

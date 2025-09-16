@@ -11,24 +11,18 @@ from langchain_core.tools import tool
 from pydantic import BaseModel, Field, ConfigDict, AliasChoices
 from pathlib import Path
 
-
-
 llm = init_chat_model("google_genai:gemini-2.5-flash")
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
-
-
-
-
 
 PROJECT_ROOT = Path(__file__).parent.parent
 
 # Define absolute paths to CSV files
-GAMING_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_gaming_pcs.csv"
-LAPTOP_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_laptops.csv"
-TABLET_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_tablets.csv"
-twoin1_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_twoin1_laptops.csv"
-DESKTOPS_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_AIO.csv"
-AIO_CSV_PATH = PROJECT_ROOT / "Jarir-scraper" / "jarir_AIO.csv"
+GAMING_CSV_PATH = PROJECT_ROOT / "data" / "jarir_gaming_pcs.csv"
+LAPTOP_CSV_PATH = PROJECT_ROOT / "data" / "jarir_laptops.csv"
+TABLET_CSV_PATH = PROJECT_ROOT / "data" / "jarir_tablets.csv"
+twoin1_CSV_PATH = PROJECT_ROOT / "data" / "jarir_twoin1_laptops.csv"
+DESKTOPS_CSV_PATH = PROJECT_ROOT / "data" / "jarir_AIO.csv"
+AIO_CSV_PATH = PROJECT_ROOT / "data" / "jarir_AIO.csv"
 
 
 GAMING_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage","price"]  
@@ -69,17 +63,11 @@ def check_gaming_laptops(specs: Dict[str, str]):
     return{
         "results": rows,
     }
-
-
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  laptops
 
 LAPTOP_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage", "renewed","price"]  
 LAPTOP_catalog = create_catalog_index(LAPTOP_CSV_PATH, LAPTOP_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_laptops(specs: Dict[str, str]):
     """
@@ -115,24 +103,13 @@ def check_laptops(specs: Dict[str, str]):
     
     return{
         "results": rows,
-    }
-    
-    
-    
-    
-    
-    
-    
+    }   
     
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  Tablets
 
 TABLET_SPEC_COLUMNS = ["brand", "model", "cpu_clock","ram", "storage","color", "renewed","price"]  
 TABLET_catalog = create_catalog_index(TABLET_CSV_PATH, TABLET_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_tablets(specs: Dict[str, str]):
     """
@@ -180,19 +157,13 @@ def check_tablets(specs: Dict[str, str]):
 
     return{
         "results": rows,
-    }
-    
-    
+    }   
     
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  2in1 laptops
 
 twoin1_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 twoin1_catalog = create_catalog_index(twoin1_CSV_PATH, twoin1_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_twoin1(specs: Dict[str, str]):
     """
@@ -227,23 +198,13 @@ def check_twoin1(specs: Dict[str, str]):
     
     return{
         "results": rows,
-    }
-    
-    
-    
-    
-    
-    
+    }   
     
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  desktops
 
 DESKTOPS_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 DESKTOPS_catalog = create_catalog_index(DESKTOPS_CSV_PATH, DESKTOPS_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_desktops(specs: Dict[str, str]):
     """
@@ -286,10 +247,6 @@ def check_desktops(specs: Dict[str, str]):
 AIO_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage", "price"]  
 AIO_catalog = create_catalog_index(AIO_CSV_PATH, AIO_SPEC_COLUMNS, EMBEDDING_MODEL)
 
-
-
-
-
 def check_AIO(specs: Dict[str, str]):
     """
     Give the specs as a dictionary with the following keys:
@@ -324,10 +281,6 @@ def check_AIO(specs: Dict[str, str]):
     return{
         "results": rows,
     }
-    
-       
-
-
 
 #---------------------------------------------------------
 # Get available models for the required brand
@@ -390,8 +343,6 @@ def retrieve_information_about_brand(brand: str) -> Dict[str, List[str]]:
 
 #--------------------------
 
-
-
 def build_product_type_first_map(csv_paths: List[str]) -> Dict[str, Dict[str, List[str]]]:
     """
     Read each CSV at the given file paths (each must have 'brand' and 'model' cols),
@@ -440,10 +391,6 @@ def retrieve_information_about_product_type(product_type: str) -> Dict[str, List
     to the list of models available under that product_type.
     """
     return product_type_map.get(product_type.lower(), {})
-
-
-
-
 
 #----------------------------------------------------------
 # Consolidation tool (backend version)

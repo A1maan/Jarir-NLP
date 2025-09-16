@@ -5,20 +5,16 @@ from langchain.chat_models import init_chat_model
 from langchain_core.messages import AnyMessage, SystemMessage, HumanMessage, AIMessage, ChatMessage
 import json
 import pandas as pd
-
+from pathlib import Path
+from typing import Dict, List
 
 llm = init_chat_model("google_genai:gemini-2.5-flash")
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 
-
 # Define the catalog index for  gaming laptops
-GAMING_CSV_PATH = "../Jarir-scraper/jarir_gaming_pcs.csv"
+GAMING_CSV_PATH = "../data/jarir_gaming_pcs.csv"
 GAMING_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage","price"]  
 gaming_laptop_catalog = create_catalog_index(GAMING_CSV_PATH, GAMING_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_gaming_laptops(specs: Dict[str, str]):
     """
@@ -54,17 +50,12 @@ def check_gaming_laptops(specs: Dict[str, str]):
         "results": rows,
     }
 
-
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  laptops
 
-LAPTOP_CSV_PATH = "../Jarir-scraper/jarir_laptops.csv"
+LAPTOP_CSV_PATH = "../data/jarir_laptops.csv"
 LAPTOP_SPEC_COLUMNS = ["brand", "model", "cpu_model", "gpu_model", "ram", "storage", "renewed","price"]  
 LAPTOP_catalog = create_catalog_index(LAPTOP_CSV_PATH, LAPTOP_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_laptops(specs: Dict[str, str]):
     """
@@ -101,23 +92,12 @@ def check_laptops(specs: Dict[str, str]):
         "results": rows,
     }
     
-    
-    
-    
-    
-    
-    
-    
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  Tablets
 
-TABLET_CSV_PATH = "../Jarir-scraper/jarir_tablets.csv"
+TABLET_CSV_PATH = "../data/jarir_tablets.csv"
 TABLET_SPEC_COLUMNS = ["brand", "model", "cpu_clock","ram", "storage","color", "renewed","price"]  
 TABLET_catalog = create_catalog_index(TABLET_CSV_PATH, TABLET_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_tablets(specs: Dict[str, str]):
     """
@@ -166,19 +146,13 @@ def check_tablets(specs: Dict[str, str]):
     return{
         "results": rows,
     }
-    
-    
-    
+     
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  2in1 laptops
 
-twoin1_CSV_PATH = "../Jarir-scraper/jarir_twoin1_laptops.csv"
+twoin1_CSV_PATH = "../data/jarir_twoin1_laptops.csv"
 twoin1_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 twoin1_catalog = create_catalog_index(twoin1_CSV_PATH, twoin1_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_twoin1(specs: Dict[str, str]):
     """
@@ -214,23 +188,13 @@ def check_twoin1(specs: Dict[str, str]):
     return{
         "results": rows,
     }
-    
-    
-    
-    
-    
-    
-    
+       
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  desktops
 
-DESKTOPS_CSV_PATH = "../Jarir-scraper/jarir_AIO.csv"
+DESKTOPS_CSV_PATH = "../data/jarir_AIO.csv"
 DESKTOPS_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage","price"]  
 DESKTOPS_catalog = create_catalog_index(DESKTOPS_CSV_PATH, DESKTOPS_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_desktops(specs: Dict[str, str]):
     """
@@ -270,13 +234,9 @@ def check_desktops(specs: Dict[str, str]):
 #-------------------------------------------------------------------------------------------------
 # Define the catalog index for  AIO devices 
 
-AIO_CSV_PATH = "../Jarir-scraper/jarir_AIO.csv"
+AIO_CSV_PATH = "../data/jarir_AIO.csv"
 AIO_SPEC_COLUMNS = ["brand", "model", "cpu_model","gpu_model","ram", "storage", "price"]  
 AIO_catalog = create_catalog_index(AIO_CSV_PATH, AIO_SPEC_COLUMNS, EMBEDDING_MODEL)
-
-
-
-
 
 def check_AIO(specs: Dict[str, str]):
     """
@@ -311,18 +271,10 @@ def check_AIO(specs: Dict[str, str]):
     return{
         "results": rows,
     }
-    
-       
-
-
 
 #---------------------------------------------------------
 
 csv_paths = [GAMING_CSV_PATH, LAPTOP_CSV_PATH, TABLET_CSV_PATH , twoin1_CSV_PATH , DESKTOPS_CSV_PATH, AIO_CSV_PATH]
-
-import pandas as pd
-from pathlib import Path
-from typing import Dict, List
 
 def build_brand_first_map(csv_paths: List[str]) -> Dict[str, Dict[str, List[str]]]:
     """
@@ -373,8 +325,6 @@ def retrieve_information_about_brand(brand: str) -> Dict[str, List[str]]:
 
 #--------------------------
 
-
-
 def build_product_type_first_map(csv_paths: List[str]) -> Dict[str, Dict[str, List[str]]]:
     """
     Read each CSV at the given file paths (each must have 'brand' and 'model' cols),
@@ -422,9 +372,5 @@ def retrieve_information_about_product_type(product_type: str) -> Dict[str, List
     to the list of models available under that product_type.
     """
     return product_type_map.get(product_type.lower(), {})
-
-
-
-
 
 #----------------------------------------------------------

@@ -3,7 +3,7 @@ FastAPI wrapper exposing /chat for the browser extension.
 Run with:  uvicorn app:app --reload
 """
 
-#testing time
+# testing time
 import time
 
 from fastapi import FastAPI
