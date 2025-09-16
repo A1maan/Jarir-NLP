@@ -63,7 +63,6 @@ Jarir-NLP/
 │   ├── package.json        # Node.js dependencies
 │   ├── tailwind.config.js  # Tailwind CSS configuration
 │   └── vite.config.js      # Vite build configuration
-├── notes/                   # Development notes and documentation
 ├── requirements.txt         # Python dependencies
 ├── setup.sh                # Environment setup script
 └── README.md               # This documentation
