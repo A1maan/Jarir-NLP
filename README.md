@@ -145,7 +145,6 @@ npm run dev  # Development mode with hot reload
 ## Notebooks
 - **AIAgent.ipynb:** AI agent development and experimentation
 - **dbSearch.ipynb:** Database search algorithm testing
-- **test.ipynb:** General testing and exploratory analysis
 
 ## Data Files
 The system generates and uses CSV files for each product category:
