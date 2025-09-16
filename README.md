@@ -38,7 +38,7 @@ Jarir-NLP/
 │   ├── jarir_laptops.csv # Laptops
 │   ├── jarir_tablets.csv # Tablets
 │   └── jarir_twoin1_laptops.csv # 2-in-1 laptops
-│   └── unused_files/        # Legacy scrapers and unused data
+│   └── unused_files/        # Unused data
 ├── web_extension/
 │   ├── manifest.json        # Browser extension manifest (Manifest V3)
 │   ├── src/
