@@ -142,9 +142,11 @@ npm run dev  # Development mode with hot reload
 - **Data Processing:** CSV handling
 - **AI/ML:** Language model integration for conversational AI
 
-## Notebooks
+## Code Files
 - **AIAgent.ipynb:** AI agent development and experimentation
 - **dbSearch.ipynb:** Database search algorithm testing
+- **dbSearch.py:** Script version of dbSearch Python notebook
+- **tools.ipynb:** Tools used by the Jarir agent
 
 ## Data Files
 The system generates and uses CSV files for each product category:
