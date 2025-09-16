@@ -32,7 +32,6 @@ def check_gaming_laptops(specs: Dict[str, str]):
        "storage":"512GB"
        "price":""}
     """
-    # 1) get the top 5 candidates via our hybrid search
     candidates = exact_search_catalog(specs, gaming_laptop_catalog)
     if not candidates:
         return "No similar products  found."
@@ -50,29 +49,7 @@ def check_gaming_laptops(specs: Dict[str, str]):
         )
         rows.append(row)
 
-    # prompt = f"""
-    # I need a product matching these specs: {specs}.
-    # Here are 5 candidate products:
-    # {rows}
-    # Please rank them from best to worst match and briefly explain why.
-    # Return only JSON in the form:
-    #   [
-    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
-    #     …
-    #   ]
-    # """
-
-    # # 3) invoke the LLM for the final ranking
-    # res = llm.invoke([
-    #     SystemMessage(content="You are an expert at matching products to user specs."),
-    #     HumanMessage(content=prompt)
-    # ])
-    # llm_output = res.content  # e.g. JSON string of id+reason
-    # ranking = json.loads(llm_output)
-    # return {
-    #   "results": rows,      # full spec dicts
-    #   "ranking": ranking    # id + match_level + reason
-    # }
+   
     return{
         "results": rows,
     }
@@ -102,7 +79,6 @@ def check_laptops(specs: Dict[str, str]):
        "renewed"":"renewed or new",
        "price":""}
     """
-    # 1) get the top 5 candidates via our hybrid search
     candidates = exact_search_catalog(specs, LAPTOP_catalog)
     if not candidates:
         return "No similar products  found."
@@ -120,29 +96,7 @@ def check_laptops(specs: Dict[str, str]):
         )
         rows.append(row)
 
-    # prompt = f"""
-    # I need a product matching these specs: {specs}.
-    # Here are 5 candidate products:
-    # {rows}
-    # Please rank them from best to worst match and briefly explain why.
-    # Return only JSON in the form:
-    #   [
-    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
-    #     …
-    #   ]
-    # """
-
-    # # 3) invoke the LLM for the final ranking
-    # res = llm.invoke([
-    #     SystemMessage(content="You are an expert at matching products to user specs."),
-    #     HumanMessage(content=prompt)
-    # ])
-    # llm_output = res.content  # e.g. JSON string of id+reason
-    # ranking = json.loads(llm_output)
-    # return {
-    #   "results": rows,      # full spec dicts
-    #   "ranking": ranking    # id + match_level + reason
-    # }
+  
     return{
         "results": rows,
     }
@@ -179,7 +133,6 @@ def check_tablets(specs: Dict[str, str]):
        "price":""}
 
     """
-    # 1) get the top 5 candidates via our hybrid search
     candidates = exact_search_catalog(specs, TABLET_catalog)
     if not candidates:
         return "No similar products  found."
@@ -192,7 +145,7 @@ def check_tablets(specs: Dict[str, str]):
         # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]                   # get the single matching record
+              .iloc[0]                   
               .to_dict()
         )
         rows.append(row)
@@ -209,30 +162,7 @@ def check_tablets(specs: Dict[str, str]):
       ]
     """
 
-    # 3) invoke the LLM for the final ranking
-    # prompt = f"""
-    # I need a product matching these specs: {specs}.
-    # Here are 5 candidate products:
-    # {rows}
-    # Please rank them from best to worst match and briefly explain why.
-    # Return only JSON in the form:
-    #   [
-    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
-    #     …
-    #   ]
-    # """
-
-    # # 3) invoke the LLM for the final ranking
-    # res = llm.invoke([
-    #     SystemMessage(content="You are an expert at matching products to user specs."),
-    #     HumanMessage(content=prompt)
-    # ])
-    # llm_output = res.content  # e.g. JSON string of id+reason
-    # ranking = json.loads(llm_output)
-    # return {
-    #   "results": rows,      # full spec dicts
-    #   "ranking": ranking    # id + match_level + reason
-    # }
+   
     return{
         "results": rows,
     }
@@ -280,29 +210,7 @@ def check_twoin1(specs: Dict[str, str]):
         )
         rows.append(row)
 
-    # prompt = f"""
-    # I need a product matching these specs: {specs}.
-    # Here are 5 candidate products:
-    # {rows}
-    # Please rank them from best to worst match and briefly explain why.
-    # Return only JSON in the form:
-    #   [
-    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
-    #     …
-    #   ]
-    # """
-
-    # # 3) invoke the LLM for the final ranking
-    # res = llm.invoke([
-    #     SystemMessage(content="You are an expert at matching products to user specs."),
-    #     HumanMessage(content=prompt)
-    # ])
-    # llm_output = res.content  # e.g. JSON string of id+reason
-    # ranking = json.loads(llm_output)
-    # return {
-    #   "results": rows,      # full spec dicts
-    #   "ranking": ranking    # id + match_level + reason
-    # }
+   
     return{
         "results": rows,
     }
@@ -354,29 +262,7 @@ def check_desktops(specs: Dict[str, str]):
         )
         rows.append(row)
 
-    # prompt = f"""
-    # I need a product matching these specs: {specs}.
-    # Here are 5 candidate products:
-    # {rows}
-    # Please rank them from best to worst match and briefly explain why.
-    # Return only JSON in the form:
-    #   [
-    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
-    #     …
-    #   ]
-    # """
-
-    # # 3) invoke the LLM for the final ranking
-    # res = llm.invoke([
-    #     SystemMessage(content="You are an expert at matching products to user specs."),
-    #     HumanMessage(content=prompt)
-    # ])
-    # llm_output = res.content  # e.g. JSON string of id+reason
-    # ranking = json.loads(llm_output)
-    # return {
-    #   "results": rows,      # full spec dicts
-    #   "ranking": ranking    # id + match_level + reason
-    # }
+  
     return{
         "results": rows,
     }
@@ -404,7 +290,6 @@ def check_AIO(specs: Dict[str, str]):
        "gpu_model":"",
        "price":""}
     """
-    # 1) get the top 5 candidates via our hybrid search
     candidates = exact_search_catalog(specs, AIO_catalog)
     if not candidates:
         return "No similar products  found."
@@ -417,34 +302,12 @@ def check_AIO(specs: Dict[str, str]):
         # find the matching row by its id
         row = (
             df.loc[df["id"] == c["id"]]
-              .iloc[0]                   # get the single matching record
+              .iloc[0]                   
               .to_dict()
         )
         rows.append(row)
 
-    # prompt = f"""
-    # I need a product matching these specs: {specs}.
-    # Here are 5 candidate products:
-    # {rows}
-    # Please rank them from best to worst match and briefly explain why.
-    # Return only JSON in the form:
-    #   [
-    #     {{"id":..., "match_level":"exact|partial|vector", "reason":"…"}}, 
-    #     …
-    #   ]
-    # """
-
-    # # 3) invoke the LLM for the final ranking
-    # res = llm.invoke([
-    #     SystemMessage(content="You are an expert at matching products to user specs."),
-    #     HumanMessage(content=prompt)
-    # ])
-    # llm_output = res.content  # e.g. JSON string of id+reason
-    # ranking = json.loads(llm_output)
-    # return {
-    #   "results": rows,      # full spec dicts
-    #   "ranking": ranking    # id + match_level + reason
-    # }
+   
     return{
         "results": rows,
     }
@@ -454,7 +317,6 @@ def check_AIO(specs: Dict[str, str]):
 
 
 #---------------------------------------------------------
-# Get available models for the required brand
 
 csv_paths = [GAMING_CSV_PATH, LAPTOP_CSV_PATH, TABLET_CSV_PATH , twoin1_CSV_PATH , DESKTOPS_CSV_PATH, AIO_CSV_PATH]
 
@@ -474,16 +336,13 @@ def build_brand_first_map(csv_paths: List[str]) -> Dict[str, Dict[str, List[str]
     brand_first_map: Dict[str, Dict[str, List[str]]] = {}
 
     for path in csv_paths:
-        # derive product_type from filename
         product_type = Path(path).stem
         if product_type.lower().endswith("_csv_path"):
             product_type = product_type[: -len("_csv_path")]
         product_type = product_type.lower()
 
-        # read only the brand & model columns
         df = pd.read_csv(path, usecols=['brand', 'model'])
 
-        # for each brand, collect its models under this product_type
         for brand in df['brand'].dropna().unique():
             models = (
                 df.loc[df['brand'] == brand, 'model']
@@ -530,16 +389,15 @@ def build_product_type_first_map(csv_paths: List[str]) -> Dict[str, Dict[str, Li
 
     for path in csv_paths:
         # 1) derive normalized product_type
-        stem = Path(path).stem.lower()            # e.g. "jarir_gaming_pcs"
+        stem = Path(path).stem.lower()            
         if stem.startswith("jarir_"):
-            stem = stem[len("jarir_"):]           # → "gaming_pcs"
-        stem = stem.replace("_pcs", "")           # → "gaming"
+            stem = stem[len("jarir_"):]           
+        stem = stem.replace("_pcs", "")           
         # singularize where needed:
         if stem.endswith("s") and stem not in ("desktops",):
-            stem = stem[:-1]                      # "laptops"→"laptop", "tablets"→"tablet"
-        product_type = stem                       # now one of gaming, laptop, tablet, twoin1, desktops
+            stem = stem[:-1]                      
+        product_type = stem                       
 
-        # 2) read & group
         df = pd.read_csv(path, usecols=["brand", "model"])
         brand_map: Dict[str, List[str]] = {}
         for brand in df["brand"].dropna().unique():
