@@ -106,7 +106,7 @@ uvicorn app:app --reload
 The FastAPI server will start on `http://localhost:8000` with auto-reload enabled.
 
 #### 2. Load the Browser Extension
-1.	Open Firefox and type about:debugging#/runtime/this-firefox in the address bar.
+1.	Open Firefox and type `about:debugging#/runtime/this-firefox` in the address bar.
 2.	In the left sidebar, click “This Firefox.”
 3.	Click the button “Load Temporary Add-on…”
 4.	In the file picker that opens, navigate to your web_extension/dist folder and select the manifest.json file (or any file inside that folder).
