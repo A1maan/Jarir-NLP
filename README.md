@@ -6,12 +6,11 @@
 # **Jarir-NLP: Personalized AI Salesman**
 
 ## Overview
-The Jarir-NLP project is an AI-powered natural language processing system that combines web scraping, intelligent product search, and conversational AI to create a personalized shopping assistant for Jarir Bookstore. The system features a browser extension that provides real-time product recommendations and comparisons directly on the Jarir website, powered by a FastAPI backend and advanced NLP capabilities.
+The Jarir-NLP project is an AI-powered natural language processing system that combines intelligent product search and conversational AI to create a personalized shopping assistant for Jarir Bookstore. The system features a browser extension that provides real-time product recommendations and comparisons directly on the Jarir website, powered by a FastAPI backend and advanced NLP capabilities.
 
 ## Features
 - **AI-Powered Chat Interface:** Interactive browser extension with conversational product search
 - **Intelligent Product Matching:** Advanced search and recommendation algorithms
-- **Multi-threaded Web Scraping:** Fast and robust data extraction with image handling
 - **Real-time Backend API:** FastAPI server with auto-reload for development
 - **Data Processing Pipeline:** Automated cleaning, normalization, and CSV export
 - **Multi-category Support:** Handles laptops, tablets, gaming PCs, desktops, and more
@@ -26,7 +25,6 @@ Jarir-NLP/
 │   ├── AIAgent.ipynb          # Main AI agent development notebook
 │   ├── dbSearch.ipynb         # Database search experiments
 │   ├── dbSearch.py           # Database search implementation
-│   ├── test.ipynb            # Testing and experimentation
 │   └── tools.py              # AI agent tools and utilities
 ├── backend/
 │   ├── agent_core.py         # Core AI agent logic
@@ -34,13 +32,12 @@ Jarir-NLP/
 │   ├── dbSearch.py          # Backend database search functionality
 │   └── tools.py             # Backend utility tools
 ├── data/
-│   ├── *.csv                # Scraped product data files
-│   │   ├── jarir_AIO.csv     # All-in-one computers
-│   │   ├── jarir_gaming_pcs.csv # Gaming PCs
-│   │   ├── jarir_laptops.csv # Laptops
-│   │   ├── jarir_tablets.csv # Tablets
-│   │   └── jarir_twoin1_laptops.csv # 2-in-1 laptops
-│   └── unused_files/        # Legacy scrapers and unused data
+│   ├── jarir_AIO.csv     # All-in-one computers
+│   ├── jarir_gaming_pcs.csv # Gaming PCs
+│   ├── jarir_laptops.csv # Laptops
+│   ├── jarir_tablets.csv # Tablets
+│   └── jarir_twoin1_laptops.csv # 2-in-1 laptops
+│   └── unused_files/        # Unused data
 ├── web_extension/
 │   ├── manifest.json        # Browser extension manifest (Manifest V3)
 │   ├── src/
@@ -65,7 +62,6 @@ Jarir-NLP/
 │   ├── package.json        # Node.js dependencies
 │   ├── tailwind.config.js  # Tailwind CSS configuration
 │   └── vite.config.js      # Vite build configuration
-├── notes/                   # Development notes and documentation
 ├── requirements.txt         # Python dependencies
 ├── setup.sh                # Environment setup script
 └── README.md               # This documentation
@@ -124,14 +120,7 @@ The FastAPI server will start on `http://localhost:8000` with auto-reload enable
    - "I need a tablet for digital art"
    - "Compare these laptops for performance"
    - "What's the best value gaming PC?"
-
-### Data Collection
-Run the web scraper to update product data:
-```bash
-cd Jarir-scraper
-python scraper_with_img.py
-```
-
+     
 ## Development
 
 ### Backend Development
@@ -150,7 +139,7 @@ npm run dev  # Development mode with hot reload
 - **Backend:** FastAPI, Python, Pandas, NLP libraries
 - **Frontend:** React, Tailwind CSS, Vite
 - **Extension:** Manifest V3, Content Scripts, Shadow DOM
-- **Data Processing:** Multi-threaded scraping, CSV handling
+- **Data Processing:** CSV handling
 - **AI/ML:** Language model integration for conversational AI
 
 ## Notebooks

@@ -1,0 +1,38 @@
+# Python virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+
+# Environment files
+.env
+
+# Data files
+# *.csv
+
+# Log files
+*.log
+
+# VS Code settings
+.vscode/
+
+KAUST_AI_POSTER.pptx
+KAUST_AI_Poster_Vertical (1).pptx
+
+Submission Material/
+
+# Obsidian config and notes
+.obsidian/
+notes/
