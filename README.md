@@ -33,12 +33,11 @@ Jarir-NLP/
 │   ├── dbSearch.py          # Backend database search functionality
 │   └── tools.py             # Backend utility tools
 ├── data/
-│   ├── *.csv                # Scraped product data files
-│   │   ├── jarir_AIO.csv     # All-in-one computers
-│   │   ├── jarir_gaming_pcs.csv # Gaming PCs
-│   │   ├── jarir_laptops.csv # Laptops
-│   │   ├── jarir_tablets.csv # Tablets
-│   │   └── jarir_twoin1_laptops.csv # 2-in-1 laptops
+│   ├── jarir_AIO.csv     # All-in-one computers
+│   ├── jarir_gaming_pcs.csv # Gaming PCs
+│   ├── jarir_laptops.csv # Laptops
+│   ├── jarir_tablets.csv # Tablets
+│   └── jarir_twoin1_laptops.csv # 2-in-1 laptops
 │   └── unused_files/        # Legacy scrapers and unused data
 ├── web_extension/
 │   ├── manifest.json        # Browser extension manifest (Manifest V3)
